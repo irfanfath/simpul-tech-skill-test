@@ -118,7 +118,7 @@ export default function ChatRoom({
     return (
         <div className="fixed bottom-25 right-6 w-[500px] h-[700px] bg-white shadow-2xl flex flex-col z-50">
             <header className="flex items-center gap-2 p-3 border-b">
-                <button onClick={onBack}><ArrowLeft /></button>
+                <button className="cursor-pointer" onClick={onBack}><ArrowLeft color="#000000" size={22}/></button>
                 <div>
                     <p className="font-semibold text-sm text-[#2F80ED]">
                         Post {postId}
