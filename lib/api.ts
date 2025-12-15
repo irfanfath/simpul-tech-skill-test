@@ -7,7 +7,7 @@ const randomTime = () => {
 }
 
 export async function fetchChats(): Promise<Record<number, Message[]>> {
-  const res = await fetch("https://mocki.io/v1/e8fd59c3-0849-4df9-a0ca-8660363ffeae")
+  const res = await fetch("https://mocki.io/v1/18275c58-cd54-4106-bb50-cb8bc6f1eae0")
   const data = await res.json()
 
   return data.reduce((acc: any, item: any) => {
