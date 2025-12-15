@@ -7,7 +7,7 @@ const randomTime = () => {
 }
 
 export async function fetchChats(): Promise<Record<number, Message[]>> {
-  const res = await fetch("https://jsonplaceholder.typicode.com/comments")
+  const res = await fetch("https://mocki.io/v1/e8fd59c3-0849-4df9-a0ca-8660363ffeae")
   const data = await res.json()
 
   return data.reduce((acc: any, item: any) => {
@@ -17,7 +17,7 @@ export async function fetchChats(): Promise<Record<number, Message[]>> {
       ...item,
       time: randomTime(),
       isMine: item.email === "me@quicks.app",
-      unread: Math.random() > 0.7
+      unread: item.unread
     })
     return acc
   }, {})

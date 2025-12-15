@@ -77,7 +77,7 @@ export default function ChatList({
         {filteredChats.map(([postId, msgs]: any) => {
           const unread = msgs.some((m: any) => m.unread)
           const users = Array.from(
-            new Map(msgs.map((m: any) => [m.email, m])).values()
+            new Map(msgs.map((m: any) => [m.name, m])).values()
           ).slice(0, 3)
 
           const lastMsg = msgs[msgs.length - 1]
@@ -103,7 +103,7 @@ export default function ChatList({
 
                 <div className="max-w-[210px]">
                   <p className="text-xs font-semibold text-blue-600">
-                    Post {postId}
+                    {lastMsg.room_title}
                   </p>
                   <p className="text-sm font-semibold text-gray-800 truncate">
                     {lastMsg.name}

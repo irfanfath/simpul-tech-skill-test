@@ -15,9 +15,9 @@ function randomTime() {
 }
 
 const OTHER_USERS = [
-    { name: "Mary Hilda", email: "mary@mail.com" },
-    { name: "John Doe", email: "john@mail.com" },
-    { name: "Alex Tan", email: "alex@mail.com" }
+    { name: "Mary Hilda" },
+    { name: "John Doe" },
+    { name: "Alex Tan" }
 ]
 
 export default function ChatRoom({
@@ -34,9 +34,9 @@ export default function ChatRoom({
     const [isTyping, setIsTyping] = useState(false)
 
     const bottomRef = useRef<HTMLDivElement>(null)
-    const postId = chatMessages[0]?.postId ?? "-"
+    const postId = chatMessages[0]?.room_title ?? "-"
 
-    const participantsCount = new Set(chatMessages.map(m => m.email)).size
+    const participantsCount = new Set(chatMessages.map(m => m.name)).size
 
     useEffect(() => {
         bottomRef.current?.scrollIntoView({ behavior: "smooth" })
@@ -54,9 +54,9 @@ export default function ChatRoom({
                 {
                     id: Date.now() + Math.random(),
                     postId,
+                    room_title: postId,
                     name: sender.name,
-                    email: sender.email,
-                    body: "This is an example realtime message",
+                    body: "Terima kasih sudah menghubungi, ini contoh realtime message",
                     time: randomTime(),
                     isMine: false,
                     unread: true
@@ -82,6 +82,7 @@ export default function ChatRoom({
             {
                 id: Date.now(),
                 postId,
+                room_title: postId,
                 name: "You",
                 email: "me@quicks.app",
                 body: text,
@@ -115,13 +116,16 @@ export default function ChatRoom({
         }
     }
 
+    const firstUnreadIndex = chatMessages.findIndex(
+        m => m.unread === true
+    )
     return (
         <div className="fixed bottom-25 right-6 w-[500px] h-[700px] bg-white shadow-2xl flex flex-col z-50">
             <header className="flex items-center gap-2 p-3 border-b">
-                <button className="cursor-pointer" onClick={onBack}><ArrowLeft color="#000000" size={22}/></button>
+                <button className="cursor-pointer" onClick={onBack}><ArrowLeft color="#000000" size={22} /></button>
                 <div>
                     <p className="font-semibold text-sm text-[#2F80ED]">
-                        Post {postId}
+                        {postId}
                     </p>
                     <p className="text-xs text-gray-500">
                         {participantsCount} Participants
@@ -130,15 +134,27 @@ export default function ChatRoom({
             </header>
 
             <div className="flex-1 overflow-y-auto p-4 space-y-3 bg-gray-50">
-                {chatMessages.map(m => (
-                    <MessageBubble
-                        key={m.id}
-                        msg={m}
-                        onEdit={handleEdit}
-                        onDelete={handleDelete}
-                        onReply={setReplyTo}
-                    />
+                {chatMessages.map((m, idx) => (
+                    <div key={m.id}>
+                        {idx === firstUnreadIndex && (
+                            <div className="flex items-center my-2">
+                                <div className="flex-1 h-px bg-red-300" />
+                                <span className="px-3 text-xs text-red-500 font-semibold">
+                                    New Message
+                                </span>
+                                <div className="flex-1 h-px bg-red-300" />
+                            </div>
+                        )}
+
+                        <MessageBubble
+                            msg={m}
+                            onEdit={handleEdit}
+                            onDelete={handleDelete}
+                            onReply={setReplyTo}
+                        />
+                    </div>
                 ))}
+
                 {isTyping && (
                     <div className="text-xs text-gray-400 italic">
                         Other user is typing…
@@ -146,6 +162,7 @@ export default function ChatRoom({
                 )}
                 <div ref={bottomRef} />
             </div>
+
 
             {replyTo && (
                 <div className="px-3 py-2 bg-gray-100 border-t text-xs flex justify-between items-center">
