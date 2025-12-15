@@ -1,7 +1,7 @@
 "use client"
 
 import { useState } from "react"
-import Inbox from "@/components/Inbox"
+import Inbox from "@/components/Chat/Inbox"
 import TaskPanel from "@/components/Task/TaskPanel"
 import { ClipboardList, MessagesSquare } from "lucide-react"
 
